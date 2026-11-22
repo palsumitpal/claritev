@@ -1,0 +1,29 @@
+MEDICARE NCCI 2026 RAG – Steps 
+Dependencies - Solution uses Uses OpenAI Key
+
+Tested only on Windows 
+
+1. Install Python 3.11+
+2. Create a virtual environment	python -m venv .venv
+3. Activate a virtual environment	.venv\Scripts\activate
+4. pip install -r requirements.txt
+5. Copy .env.example to .env and set the following 
+	OPENAI_API_KEY=
+	OPENAI_CHAT_MODEL=gpt-4.1-mini
+	OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+6. Download the official CMS 2026 NCCI PDF locally into a data folder ( I did it locally to where the code is in data folder)
+
+7. Create the indexes for all the strategies and embeddings  - python -m src.indexer --pdf data\2026_ncci_medicare_policy_manual_all-chapters.pdf --strategy all
+	Strategy Choices=["fixed", "structure", "all"] default="all"
+
+8. Chat with the Assistant with questions - python -m src.chat --strategy structure --retrieval hybrid
+	Strategy Choices=["fixed", "structure"], default="structure"
+	Retrieval Choices=["vector", "bm25", "hybrid"], default="hybrid"
+	
+Sample QUestions I tested with:
+What is the purpose of the NCCI Policy Manual?
+Explain the circumstances under which modifiers can be used.
+What are the general principles governing NCCI edits?
+How does the manual describe mutually exclusive procedures?
+
+
